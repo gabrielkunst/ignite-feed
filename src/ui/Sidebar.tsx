@@ -1,4 +1,6 @@
+import { PencilSimpleLine } from "@phosphor-icons/react";
 import { Button } from "./Button";
+import { UserAvatar } from "./UserAvatar";
 
 export function Sidebar() {
 	return (
@@ -8,16 +10,21 @@ export function Sidebar() {
 				className="max-h-[4.5rem] w-full object-cover"
 			/>
 			<div className="flex flex-col items-center pb-6">
-				<img
+				<UserAvatar
 					src="https://github.com/gabrielkunst.png"
-					className="w-16 h-16 object-cover rounded-md border-4 border-clr-gray-600 outline outline-2 outline-clr-green-100 -m-7 mb-4"
+					className="-m-7 mb-4"
+					variation="outlined"
 				/>
 				<strong className="text-clr-gray-100">Gabriel Kunst</strong>
 				<span className="text-sm text-clr-gray-300">Web Developer</span>
 			</div>
 
 			<footer className="px-8 pb-8 pt-6 border-t border-clr-gray-500">
-				<Button />
+				<Button
+					variation="outlined"
+					text="Editar seu perfil"
+					icon={<PencilSimpleLine size={20} />}
+				/>
 			</footer>
 		</aside>
 	);
