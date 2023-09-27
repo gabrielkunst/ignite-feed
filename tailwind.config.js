@@ -15,6 +15,7 @@ export default {
 				"clr-gray-300": "#8D8D99",
 				"clr-gray-400": "#7C7C8A",
 				"clr-gray-500": "#323238",
+				"clr-gray-550": "#29292E",
 				"clr-gray-600": "#202024",
 				"clr-gray-700": "#121214",
 				"clr-red-200": "#F75A68",
