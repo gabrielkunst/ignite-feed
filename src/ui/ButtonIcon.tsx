@@ -1,16 +1,15 @@
 import { twMerge } from "tailwind-merge";
 
-interface ButtonIconProps {
+interface ButtonIconProps
+	extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	icon: React.ReactElement;
-	className?: string;
-	title: string;
 }
 
-export function ButtonIcon({ icon, className, title }: ButtonIconProps) {
+export function ButtonIcon({ icon, className, ...props }: ButtonIconProps) {
 	return (
 		<button
+			{...props}
 			className={twMerge("transition-all duration-100", className)}
-			title={title}
 		>
 			{icon}
 		</button>

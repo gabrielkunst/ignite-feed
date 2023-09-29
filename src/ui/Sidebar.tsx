@@ -21,6 +21,7 @@ export function Sidebar() {
 
 			<footer className="px-8 pb-8 pt-6 border-t border-clr-gray-500">
 				<Button
+					className="w-full"
 					variation="outlined"
 					text="Editar seu perfil"
 					icon={<PencilSimpleLine size={20} />}

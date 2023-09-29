@@ -1,8 +1,43 @@
 import { ThumbsUp, Trash } from "@phosphor-icons/react";
 import { UserAvatar } from "./UserAvatar";
 import { ButtonIcon } from "./ButtonIcon";
+import { IComment } from "@/@types/Comment";
+import { format, formatDistanceToNow } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
+import { useState } from "react";
 
-export function Comment() {
+interface CommentProps {
+	comment: IComment;
+	onDeleteComment: (commentId: number) => void;
+}
+
+export function Comment({
+	comment: { author, content, id: commentId, publishedAt },
+	onDeleteComment,
+}: CommentProps) {
+	const [likeCount, setLikeCount] = useState<number>(0);
+
+	const publishedDateFormatted = format(
+		publishedAt,
+		"dd 'de' MMMM 'às' HH:mm'h'",
+		{
+			locale: ptBR,
+		}
+	);
+
+	const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+		locale: ptBR,
+		addSuffix: true,
+	});
+
+	function handleLikeComment() {
+		setLikeCount((prevLikeCount) => prevLikeCount + 1);
+	}
+
+	function handleDeleteComment() {
+		onDeleteComment(commentId);
+	}
+
 	return (
 		<article className="flex gap-4">
 			<UserAvatar src="https://github.com/gabrielkunst.png" />
@@ -10,33 +45,35 @@ export function Comment() {
 				<div className="bg-clr-gray-550 p-4 rounded-lg mb-4">
 					<header className="flex items-start justify-between">
 						<div className="flex flex-col">
-							<span>
-								<strong>Gabriel Kunst </strong> (você)
-							</span>
+							<strong>{author.name}</strong>
 							<time
 								className="text-sm text-clr-gray-300"
-								title="11 de Maio às 08:13h"
-								dateTime="2022-05-11 08:13:30"
+								title={publishedDateFormatted}
+								dateTime={publishedAt.toISOString()}
 							>
-								Públicado há 2h
+								{publishedDateRelativeToNow}
 							</time>
 						</div>
 						<ButtonIcon
+							onClick={handleDeleteComment}
 							icon={<Trash size={24} />}
 							title="Deletar comentário"
 							className="hover:text-clr-red-200"
 						/>
 					</header>
 					<main className="pt-4 pb-2">
-						<p>Muito bom Devon, parabéns!! 👏👏</p>
+						<p>{content}</p>
 					</main>
 				</div>
 				<footer>
-					<button className="flex items-center hover:text-clr-green-100 transition-colors duration-100">
+					<button
+						className="flex items-center hover:text-clr-green-100 transition-colors duration-100 focus:shadow-none"
+						onClick={handleLikeComment}
+					>
 						<ThumbsUp size={20} className="mr-2" />
 						Aplaudir
 						<span className="before:content-['\2022'] before:px-1">
-							33
+							{likeCount}
 						</span>
 					</button>
 				</footer>
