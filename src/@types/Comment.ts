@@ -5,5 +5,5 @@ export interface IComment {
 	content: string;
 	author: IAuthor;
 	publishedAt: Date;
-	numberOfLikes?: number; // not implemented
+	numberOfLikes: number;
 }

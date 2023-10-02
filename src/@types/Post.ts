@@ -1,4 +1,5 @@
 import { IAuthor } from "./Author";
+import { IComment } from "./Comment";
 
 interface IPostContent {
 	type: string;
@@ -10,4 +11,5 @@ export interface IPost {
 	author: IAuthor;
 	content: IPostContent[];
 	publishedAt: Date;
+	comments: IComment[];
 }

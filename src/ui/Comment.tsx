@@ -5,17 +5,20 @@ import { IComment } from "@/@types/Comment";
 import { format, formatDistanceToNow } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
 import { useState } from "react";
+import { LocalStorageController } from "@/utils/LocalStorageController";
 
 interface CommentProps {
+	postId: number;
 	comment: IComment;
 	onDeleteComment: (commentId: number) => void;
 }
 
 export function Comment({
-	comment: { author, content, id: commentId, publishedAt },
+	postId,
+	comment: { author, content, id: commentId, publishedAt, numberOfLikes },
 	onDeleteComment,
 }: CommentProps) {
-	const [likeCount, setLikeCount] = useState<number>(0);
+	const [likeCount, setLikeCount] = useState<number>(numberOfLikes);
 
 	const publishedDateFormatted = format(
 		publishedAt,
@@ -31,7 +34,14 @@ export function Comment({
 	});
 
 	function handleLikeComment() {
-		setLikeCount((prevLikeCount) => prevLikeCount + 1);
+		setLikeCount((prevLikeCount) => {
+			LocalStorageController.UpdateCommentLikeCount(
+				postId,
+				commentId,
+				prevLikeCount + 1
+			);
+			return prevLikeCount + 1;
+		});
 	}
 
 	function handleDeleteComment() {

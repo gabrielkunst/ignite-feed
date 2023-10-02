@@ -7,9 +7,16 @@ import { Comment } from "./Comment";
 import { UserAvatar } from "./UserAvatar";
 import { FormEvent, useState } from "react";
 import { IComment } from "@/@types/Comment";
+import { LocalStorageController } from "@/utils/LocalStorageController";
 
-export function Post({ author, content, publishedAt }: IPost) {
-	const [comments, setComments] = useState<IComment[]>([]);
+export function Post({
+	id,
+	author,
+	content,
+	publishedAt,
+	comments: postComments,
+}: IPost) {
+	const [comments, setComments] = useState<IComment[]>([...postComments]);
 	const [newCommentText, setNewCommentText] = useState<string>("");
 
 	const publishedDateFormatted = format(
@@ -34,20 +41,20 @@ export function Post({ author, content, publishedAt }: IPost) {
 
 	function handleCreateComment(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
-		setComments((prevComments) => [
-			...prevComments,
-			{
-				id: Math.floor(Math.random() * 999),
-				content: newCommentText,
-				publishedAt: new Date(),
-				author: {
-					avatarUrl: "https://github.com/gabrielkunst.png",
-					name: "Gabriel Kunst",
-					role: "Web Developer",
-				},
+		const newComment: IComment = {
+			id: Math.floor(Math.random() * 999),
+			content: newCommentText,
+			publishedAt: new Date(),
+			author: {
+				avatarUrl: "https://github.com/gabrielkunst.png",
+				name: "Gabriel",
+				role: "Web Developer",
 			},
-		]);
+			numberOfLikes: 0,
+		};
+		setComments((prevComments) => [...prevComments, newComment]);
 		setNewCommentText("");
+		LocalStorageController.CreateComment(id, newComment);
 	}
 
 	function handleDeleteComment(commentId: number) {
@@ -55,6 +62,7 @@ export function Post({ author, content, publishedAt }: IPost) {
 			(comment) => comment.id !== commentId
 		);
 		setComments(commentWithoutDeletedOne);
+		LocalStorageController.DeleteComment(id, commentId);
 	}
 
 	function handleNewCommentInvalid(event: FormEvent<HTMLTextAreaElement>) {
@@ -127,6 +135,7 @@ export function Post({ author, content, publishedAt }: IPost) {
 				<div className="flex flex-col gap-6 mt-6">
 					{comments.map((comment) => (
 						<Comment
+							postId={id}
 							key={comment.id}
 							comment={comment}
 							onDeleteComment={handleDeleteComment}

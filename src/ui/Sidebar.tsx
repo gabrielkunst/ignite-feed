@@ -15,7 +15,7 @@ export function Sidebar() {
 					className="-m-7 mb-4"
 					variation="outlined"
 				/>
-				<strong className="text-clr-gray-100">Gabriel Kunst</strong>
+				<strong className="text-clr-gray-100">Gabriel</strong>
 				<span className="text-sm text-clr-gray-300">Web Developer</span>
 			</div>
 
